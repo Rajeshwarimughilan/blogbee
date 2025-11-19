@@ -11,15 +11,21 @@ const app = express();
 const PORT = process.env.PORT || 5000;
 
 // Middleware
-app.use(cors());
+// Enable CORS and explicitly allow Authorization header for JWT bearer
+app.use(cors({
+  origin: true,
+  allowedHeaders: ['Content-Type', 'Authorization']
+}));
+// handle preflight
+app.options('*', cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// MongoDB connection
-const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost:27017/blogbee';
-
 // // MongoDB connection
-// const MONGODB_URI =  'mongodb://localhost:27017/blogbee';
+// const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost:27017/blogbee';
+
+// MongoDB connection
+const MONGODB_URI =  'mongodb://localhost:27017/blogbee';
 
 mongoose.connect(MONGODB_URI, {
   useNewUrlParser: true,

@@ -9,6 +9,7 @@ const JWT_EXPIRES_IN = process.env.JWT_EXPIRES_IN || '7d';
 const register = async (req, res) => {
   try {
     const { username, email, password } = req.body;
+    console.debug('Register attempt for:', { username, email });
 
     if (!username || !email || !password) {
       return res.status(400).json({ success: false, message: 'Username, email and password are required' });
@@ -46,6 +47,7 @@ const register = async (req, res) => {
 const login = async (req, res) => {
   try {
     const { emailOrUsername, password } = req.body;
+    console.debug('Login attempt for:', { emailOrUsername });
     if (!emailOrUsername || !password) {
       return res.status(400).json({ success: false, message: 'Email/username and password are required' });
     }
