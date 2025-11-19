@@ -18,6 +18,18 @@ const postSchema = new mongoose.Schema({
     trim: true,
     maxLength: [50, 'Author name cannot exceed 50 characters']
   },
+  authorId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
+    required: false
+  },
+  // users who liked this post
+  likes: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'User'
+    }
+  ],
   createdAt: {
     type: Date,
     default: Date.now

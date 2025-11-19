@@ -18,6 +18,9 @@ app.use(express.urlencoded({ extended: true }));
 // MongoDB connection
 const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost:27017/blogbee';
 
+// // MongoDB connection
+// const MONGODB_URI =  'mongodb://localhost:27017/blogbee';
+
 mongoose.connect(MONGODB_URI, {
   useNewUrlParser: true,
   useUnifiedTopology: true,

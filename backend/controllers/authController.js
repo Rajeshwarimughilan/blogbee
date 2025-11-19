@@ -28,7 +28,14 @@ const register = async (req, res) => {
 
     const token = jwt.sign({ id: newUser._id }, JWT_SECRET, { expiresIn: JWT_EXPIRES_IN });
 
-    res.status(201).json({ success: true, data: { user: { id: newUser._id, username: newUser.username, email: newUser.email }, token } });
+    // return _id (and keep id for backward compatibility)
+    res.status(201).json({
+      success: true,
+      data: {
+        user: { _id: newUser._id, id: newUser._id, username: newUser.username, email: newUser.email },
+        token
+      }
+    });
   } catch (error) {
     console.error('Error in register:', error);
     res.status(500).json({ success: false, message: 'Server error', error: error.message });
@@ -55,7 +62,14 @@ const login = async (req, res) => {
 
     const token = jwt.sign({ id: user._id }, JWT_SECRET, { expiresIn: JWT_EXPIRES_IN });
 
-    res.status(200).json({ success: true, data: { user: { id: user._id, username: user.username, email: user.email }, token } });
+    // return _id so clients can use a consistent property
+    res.status(200).json({
+      success: true,
+      data: {
+        user: { _id: user._id, id: user._id, username: user.username, email: user.email },
+        token
+      }
+    });
   } catch (error) {
     console.error('Error in login:', error);
     res.status(500).json({ success: false, message: 'Server error', error: error.message });

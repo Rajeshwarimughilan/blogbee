@@ -4,8 +4,10 @@ const {
   getPostById,
   createPost,
   updatePost,
-  deletePost
+  deletePost,
+  toggleLike
 } = require('../controllers/postController');
+const { verifyToken } = require('../middleware/authMiddleware');
 
 const router = express.Router();
 
@@ -21,17 +23,22 @@ router.get('/:id', getPostById);
 
 // @route   POST /api/posts
 // @desc    Create new post
-// @access  Public
-router.post('/', createPost);
+// @access  Protected
+router.post('/', verifyToken, createPost);
+
+// @route   POST /api/posts/:id/like
+// @desc    Toggle like/unlike for a post
+// @access  Protected (requires auth)
+router.post('/:id/like', verifyToken, toggleLike);
 
 // @route   PUT /api/posts/:id
 // @desc    Update post
-// @access  Public
-router.put('/:id', updatePost);
+// @access  Protected (owner only)
+router.put('/:id', verifyToken, updatePost);
 
 // @route   DELETE /api/posts/:id
 // @desc    Delete post
-// @access  Public
-router.delete('/:id', deletePost);
+// @access  Protected (owner only)
+router.delete('/:id', verifyToken, deletePost);
 
 module.exports = router;
