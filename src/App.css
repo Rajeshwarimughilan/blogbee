@@ -4,6 +4,20 @@
   padding: 0;
 }
 
+:root {
+  --bg-900: #060606;
+  --bg-800: #0f0f12;
+  --bg-700: #141416;
+  --card-bg: rgba(255, 255, 255, 0.02);
+  --muted: #b7bcc1;
+  --text: #eef1f2;
+  --honey-1: #FFB300; /* bright honey */
+  --honey-2: #E6A800; /* deep gold */
+  --honey-3: #FFD66B; /* light honey */
+  --glass-border: rgba(255,255,255,0.04);
+  --shadow: rgba(0,0,0,0.45);
+}
+
 html {
   scroll-behavior: smooth;
 }
@@ -15,7 +29,9 @@ html {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background: linear-gradient(135deg, #0f0f23 0%, #1a1a2e 50%, #16213e 100%);
+  background: radial-gradient(1200px 600px at 10% 10%, rgba(255,179,0,0.06), transparent 6%),
+              radial-gradient(1000px 500px at 90% 90%, rgba(230,168,0,0.04), transparent 8%),
+              linear-gradient(180deg, var(--bg-900) 0%, var(--bg-800) 50%, var(--bg-700) 100%);
   min-height: 100vh;
   transition: all 0.3s ease;
 }
@@ -23,18 +39,18 @@ html {
 body {
   margin: 0;
   padding: 0;
-  background: #0f0f23;
-  color: #e4e6ea;
+  background: transparent;
+  color: var(--text);
   overflow-x: hidden;
 }
 
 code {
   font-family: 'JetBrains Mono', source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
-  background: rgba(255, 255, 255, 0.05);
+  background: rgba(0, 0, 0, 0.45);
   padding: 2px 6px;
   border-radius: 4px;
-  color: #64ffda;
+  color: var(--honey-3);
 }
 
 /* Global button styles */
@@ -55,7 +71,7 @@ button::before {
   left: 50%;
   width: 0;
   height: 0;
-  background: rgba(255, 255, 255, 0.1);
+  background: radial-gradient(circle, rgba(255,179,0,0.12), transparent 30%);
   border-radius: 50%;
   transition: all 0.6s ease;
   transform: translate(-50%, -50%);
@@ -85,16 +101,16 @@ a {
 }
 
 ::-webkit-scrollbar-track {
-  background: #1a1a2e;
+  background: var(--bg-800);
 }
 
 ::-webkit-scrollbar-thumb {
-  background: linear-gradient(45deg, #64ffda, #42a5f5);
+  background: linear-gradient(45deg, var(--honey-2), var(--honey-1));
   border-radius: 10px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: linear-gradient(45deg, #42a5f5, #64ffda);
+  filter: brightness(1.05);
 }
 
 /* Utility classes */
@@ -154,11 +170,11 @@ a {
 
 /* Glowing effects */
 .glow {
-  box-shadow: 0 0 20px rgba(100, 255, 218, 0.3);
+  box-shadow: 0 6px 28px rgba(230, 168, 0, 0.12), 0 0 40px rgba(230,168,0,0.06);
 }
 
-.glow-blue {
-  box-shadow: 0 0 20px rgba(66, 165, 245, 0.3);
+.glow-honey {
+  box-shadow: 0 8px 30px rgba(255,179,0,0.14), 0 0 50px rgba(255,179,0,0.06);
 }
 
 /* Layout when SideNav is present */

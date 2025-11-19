@@ -1,12 +1,14 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { authService } from '../services/authService';
+import { useAuth } from '../context/AuthContext';
 import './SignupPage.css';
 
 const SignupPage = () => {
   const [form, setForm] = useState({ username: '', email: '', password: '' });
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  const { login } = useAuth();
 
   const handleChange = (e) => setForm({ ...form, [e.target.name]: e.target.value });
 
@@ -15,10 +17,10 @@ const SignupPage = () => {
     setLoading(true);
     try {
       const res = await authService.register(form);
-      const { token, user } = res.data.data;
-      localStorage.setItem('token', token);
-      localStorage.setItem('user', JSON.stringify(user));
-      navigate('/');
+  const { token, user } = res.data.data;
+  // use AuthContext to store auth state
+  login(user, token);
+  navigate('/');
     } catch (err) {
       alert(err?.response?.data?.message || 'Registration failed');
     } finally {
