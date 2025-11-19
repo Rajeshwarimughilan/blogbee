@@ -5,6 +5,7 @@ import CreatePostPage from './pages/CreatePostPage';
 import LoginPage from './pages/LoginPage';
 import SignupPage from './pages/SignupPage';
 import ProfilePage from './pages/ProfilePage';
+import UserProfilePage from './pages/UserProfilePage';
 import SearchPage from './pages/SearchPage';
 import SideNav from './components/SideNav';
 import { AuthProvider } from './context/AuthContext';
@@ -23,6 +24,7 @@ function App() {
               <Route path="/login" element={<LoginPage />} />
               <Route path="/signup" element={<SignupPage />} />
               <Route path="/profile" element={<ProfilePage />} />
+              <Route path="/users/:id" element={<UserProfilePage />} />
               <Route path="/search" element={<SearchPage />} />
             </Routes>
           </main>

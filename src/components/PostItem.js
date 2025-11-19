@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './PostItem.css';
 import { useAuth } from '../context/AuthContext';
+import { postService } from '../services/postService';
 
 const PostItem = ({ post, onEdit, onDelete }) => {
   const handleEdit = () => {
@@ -60,6 +61,44 @@ const PostItem = ({ post, onEdit, onDelete }) => {
     return false;
   })();
 
+  // likes state - keep local copy for optimistic UI updates
+  const [likes, setLikes] = useState(post.likes || []);
+  const [showLikers, setShowLikers] = useState(false);
+  const hasLiked = (() => {
+    if (!currentUser) return false;
+    const uid = currentUser._id || currentUser.id;
+    return likes.some(l => (l._id ? String(l._id) === String(uid) : String(l) === String(uid)));
+  })();
+
+  const handleToggleLike = async () => {
+    if (!currentUser) {
+      alert('Please log in to like posts');
+      return;
+    }
+    try {
+      // optimistic update
+      let newLikes;
+      if (hasLiked) {
+        newLikes = likes.filter(l => String(l._id || l) !== String(currentUser._id || currentUser.id));
+      } else {
+        newLikes = [...likes, { _id: currentUser._id || currentUser.id, username: currentUser.username }];
+      }
+      setLikes(newLikes);
+
+      const res = await postService.toggleLike(post._id);
+      // backend returns populated likes array
+      if (res && res.data && res.data.data && res.data.data.likes) {
+        setLikes(res.data.data.likes);
+      }
+    } catch (err) {
+      console.error('Like toggle failed', err);
+      // revert optimistic
+      setLikes(post.likes || []);
+    }
+  };
+
+  const toggleShowLikers = () => setShowLikers(s => !s);
+
   return (
     <div className="post-item">
       <div className="post-header">
@@ -81,6 +120,22 @@ const PostItem = ({ post, onEdit, onDelete }) => {
       <div className="post-meta">
         <span className="post-author">By {post.author}</span>
         <span className="post-date">{formatDate(post.createdAt)}</span>
+        <div className="post-likes">
+          <button className={`heart-btn ${hasLiked ? 'liked' : ''}`} onClick={handleToggleLike} title={hasLiked ? 'Unlike' : 'Like'}>
+            {hasLiked ? '❤️' : '🤍'}
+          </button>
+          <button className="likes-count" onClick={toggleShowLikers} title="Show who liked">
+            {likes.length} {likes.length === 1 ? 'like' : 'likes'}
+          </button>
+          {showLikers && (
+            <div className="likers-list">
+              {likes.length === 0 && <div className="no-likes">No likes yet</div>}
+              {likes.map(l => (
+                <div key={l._id || l} className="liker-item">{l.username || l}</div>
+              ))}
+            </div>
+          )}
+        </div>
       </div>
       
       <div className="post-content">

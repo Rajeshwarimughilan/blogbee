@@ -1,4 +1,21 @@
 const User = require('../models/User');
+const Post = require('../models/Post');
+
+// Get public profile and posts for a user (by id)
+const getUserById = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const user = await User.findById(id).select('username email bio createdAt');
+    if (!user) return res.status(404).json({ success: false, message: 'User not found' });
+
+    const posts = await Post.find({ authorId: id }).sort({ createdAt: -1 }).populate('likes', 'username');
+
+    res.json({ success: true, data: { user, posts } });
+  } catch (error) {
+    console.error('Error getUserById:', error);
+    res.status(500).json({ success: false, message: 'Server error' });
+  }
+};
 
 // Get profile of current user (protected)
 const getProfile = async (req, res) => {
@@ -26,4 +43,4 @@ const searchUsers = async (req, res) => {
   }
 };
 
-module.exports = { getProfile, searchUsers };
+module.exports = { getProfile, searchUsers, getUserById };

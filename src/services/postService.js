@@ -102,6 +102,17 @@ export const postService = {
       throw error;
     }
   }
+  ,
+  // Toggle like for a post (adds or removes current user from likes)
+  toggleLike: async (id) => {
+    try {
+      const response = await api.post(`/posts/${id}/like`);
+      return response;
+    } catch (error) {
+      console.error('Error toggling like:', error);
+      throw error;
+    }
+  }
 };
 
 export default postService;

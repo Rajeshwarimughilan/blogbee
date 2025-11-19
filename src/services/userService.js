@@ -12,6 +12,12 @@ export const userService = {
     const res = await api.get('/users/search', { params: { q } });
     return res;
   }
+  ,
+  // Get public user profile + posts by user id
+  getUserById: async (id) => {
+    const res = await api.get(`/users/${id}`);
+    return res;
+  }
 };
 
 export default userService;

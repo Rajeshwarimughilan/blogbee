@@ -17,6 +17,34 @@
   box-shadow: 0 12px 36px rgba(0, 0, 0, 0.45);
 }
 
+/* Inner header container for left-logo / right-text layout centered as a block */
+.home-header-inner {
+  display: flex;
+  align-items: center;
+  justify-content: center; /* center the combined block horizontally */
+  gap: 28px;
+  max-width: 980px;
+  margin: 0 auto; /* center block inside header */
+  padding: 10px 20px;
+  position: relative;
+  z-index: 3;
+}
+
+.home-header .header-left {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+}
+
+.home-header .header-right {
+  text-align: left; /* text should be left aligned next to logo */
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  align-items: flex-start;
+}
+
 .home-header::before {
   content: '';
   position: absolute;
@@ -61,6 +89,21 @@
   position: relative;
   z-index: 2;
   animation: slideUp 1s ease-out 0.3s both;
+}
+
+/* Logo sizing to prevent full-width stretch */
+.home-header .bee-logo {
+  width: 96px;
+  height: auto;
+  display: block;
+  margin: 0 auto 12px;
+  object-fit: contain;
+}
+
+@media (min-width: 1100px) {
+  .home-header .bee-logo {
+    width: 140px;
+  }
 }
 
 .create-post-btn {
@@ -143,6 +186,15 @@
 @media (max-width: 768px) {
   .home-header {
     padding: 40px 20px;
+  }
+  .home-header-inner {
+    flex-direction: column;
+    gap: 16px;
+    align-items: center;
+  }
+  .home-header .header-right {
+    text-align: center;
+    align-items: center;
   }
   
   .home-header h1 {

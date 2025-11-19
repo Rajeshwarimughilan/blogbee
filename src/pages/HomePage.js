@@ -4,6 +4,7 @@ import PostList from '../components/PostList';
 import PostForm from '../components/PostForm';
 import { postService } from '../services/postService';
 import './HomePage.css';
+import logo from '../logo.png';
 
 const HomePage = () => {
   const [posts, setPosts] = useState([]);
@@ -77,11 +78,18 @@ const HomePage = () => {
   return (
     <div className="home-page">
       <header className="home-header">
-        <h1>🐝 BlogBee</h1>
-        <p>Share your thoughts with the world</p>
-        <Link to="/create" className="create-post-btn">
-          ✍️ Write New Post
-        </Link>
+        <div className="home-header-inner">
+          <div className="header-left">
+            <img src={logo} alt="BlogBee Logo" className="bee-logo" />
+          </div>
+          <div className="header-right">
+            <h1>BlogBee</h1>
+            <p>Share your thoughts with the world</p>
+            <Link to="/create" className="create-post-btn">
+               Write New Post
+            </Link>
+          </div>
+        </div>
       </header>
 
       {error && (
