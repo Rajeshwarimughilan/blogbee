@@ -1,0 +1,8 @@
+.search-page { max-width:900px; margin:0 auto; }
+.search-form { display:flex; gap:8px; margin-bottom:20px; }
+.search-form input { flex:1; padding:12px; border-radius:8px; background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.06); color:#e4e6ea; }
+.search-form button { padding:12px 16px; border-radius:8px; background:linear-gradient(45deg,#64ffda,#42a5f5); border:none; color:#081129; }
+.search-item { background:rgba(255,255,255,0.02); padding:12px; border-radius:8px; margin-bottom:8px; display:flex; justify-content:space-between; }
+.search-username { color:#e4e6ea; font-weight:600; }
+.search-email { color:#b0bec5; }
+.no-results { color:#9aa6b2; }

@@ -1,0 +1,5 @@
+.profile-page { display:flex; justify-content:center; padding-top:20px; }
+.profile-card { width:100%; max-width:720px; background:rgba(255,255,255,0.02); padding:28px; border-radius:12px; box-shadow:0 10px 30px rgba(0,0,0,0.4); }
+.profile-card h2 { color:#e4e6ea; margin-bottom:6px; }
+.profile-email { color:#90caf9; margin-bottom:12px; }
+.profile-bio { color:#b0bec5; }
