@@ -1,5 +1,7 @@
 const Post = require('../models/Post');
 const User = require('../models/User');
+const fs = require('fs');
+const path = require('path');
 
 // Get all posts
 const getAllPosts = async (req, res) => {
@@ -139,8 +141,23 @@ const deletePost = async (req, res) => {
       }
     }
 
-    await post.remove();
-    res.status(200).json({ success: true, message: 'Post deleted successfully', data: post });
+    // delete associated image file if present
+    if (post.imageUrl) {
+      try {
+        const filename = path.basename(post.imageUrl);
+        const filePath = path.resolve(path.join(__dirname, '..', 'uploads', filename));
+        if (fs.existsSync(filePath)) {
+          fs.unlinkSync(filePath);
+        } else {
+          console.debug('deletePost: image file not found, skipping unlink', filePath);
+        }
+      } catch (e) {
+        console.error('deletePost: failed to unlink file', e);
+      }
+    }
+
+    await Post.findByIdAndDelete(id);
+    res.status(200).json({ success: true, message: 'Post deleted successfully' });
   } catch (error) {
     console.error('Error deleting post:', error);
     res.status(500).json({ success: false, message: 'Failed to delete post', error: error.message });

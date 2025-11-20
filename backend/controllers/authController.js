@@ -33,7 +33,7 @@ const register = async (req, res) => {
     res.status(201).json({
       success: true,
       data: {
-        user: { _id: newUser._id, id: newUser._id, username: newUser.username, email: newUser.email, picture: newUser.picture || '' },
+        user: { _id: newUser._id, id: newUser._id, username: newUser.username, email: newUser.email, picture: newUser.picture || '', role: newUser.role || 'user' },
         token
       }
     });
@@ -68,7 +68,7 @@ const login = async (req, res) => {
     res.status(200).json({
       success: true,
       data: {
-        user: { _id: user._id, id: user._id, username: user.username, email: user.email, picture: user.picture || '' },
+        user: { _id: user._id, id: user._id, username: user.username, email: user.email, picture: user.picture || '', role: user.role || 'user' },
         token
       }
     });
@@ -130,7 +130,7 @@ const googleAuth = async (req, res) => {
     }
 
     const token = jwt.sign({ id: user._id }, JWT_SECRET, { expiresIn: JWT_EXPIRES_IN });
-  res.status(200).json({ success: true, data: { user: { _id: user._id, id: user._id, username: user.username, email: user.email, picture: user.picture || '' }, token } });
+  res.status(200).json({ success: true, data: { user: { _id: user._id, id: user._id, username: user.username, email: user.email, picture: user.picture || '', role: user.role || 'user' }, token } });
   } catch (error) {
     console.error('Error in googleAuth:', error);
     res.status(500).json({ success: false, message: 'Server error', error: error.message });

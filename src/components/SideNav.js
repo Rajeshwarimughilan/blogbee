@@ -24,6 +24,9 @@ const SideNav = () => {
         <li><NavLink to="/search" className={({isActive}) => isActive ? 'active' : ''}>Search</NavLink></li>
         <li><NavLink to="/create" className={({isActive}) => isActive ? 'active' : ''}>Create Post</NavLink></li>
         <li><NavLink to="/profile" className={({isActive}) => isActive ? 'active' : ''}>Profile</NavLink></li>
+        {user && user.role === 'admin' && (
+          <li><NavLink to="/admin" className={({isActive}) => isActive ? 'active' : ''}>Admin</NavLink></li>
+        )}
       </ul>
 
       <div className="auth-actions">
