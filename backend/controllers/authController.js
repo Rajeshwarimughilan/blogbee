@@ -33,7 +33,7 @@ const register = async (req, res) => {
     res.status(201).json({
       success: true,
       data: {
-        user: { _id: newUser._id, id: newUser._id, username: newUser.username, email: newUser.email },
+        user: { _id: newUser._id, id: newUser._id, username: newUser.username, email: newUser.email, picture: newUser.picture || '' },
         token
       }
     });
@@ -68,7 +68,7 @@ const login = async (req, res) => {
     res.status(200).json({
       success: true,
       data: {
-        user: { _id: user._id, id: user._id, username: user.username, email: user.email },
+        user: { _id: user._id, id: user._id, username: user.username, email: user.email, picture: user.picture || '' },
         token
       }
     });
@@ -78,4 +78,63 @@ const login = async (req, res) => {
   }
 };
 
-module.exports = { register, login };
+// Google Sign-In using ID token from client
+const googleAuth = async (req, res) => {
+  try {
+    const { idToken } = req.body;
+    if (!idToken) return res.status(400).json({ success: false, message: 'idToken is required' });
+
+    // Verify token with Google's tokeninfo endpoint
+    const verifyUrl = `https://oauth2.googleapis.com/tokeninfo?id_token=${encodeURIComponent(idToken)}`;
+    const resp = await fetch(verifyUrl);
+    if (!resp.ok) {
+      console.error('Google tokeninfo failed', await resp.text());
+      return res.status(401).json({ success: false, message: 'Invalid Google ID token' });
+    }
+
+    const payload = await resp.json();
+    // payload contains: email, email_verified, name, picture, sub (google user id)
+    const { email, email_verified, name, picture, sub } = payload;
+    if (!email || !email_verified) {
+      return res.status(400).json({ success: false, message: 'Google account email not available or not verified' });
+    }
+
+    // find or create user
+    let user = await User.findOne({ email: email.toLowerCase() });
+    if (!user) {
+      // generate a username from name or email
+      const base = (name || email.split('@')[0]).replace(/[^a-zA-Z0-9]/g, '').toLowerCase() || 'user';
+      let username = base;
+      let suffix = 1;
+      while (await User.findOne({ username })) {
+        username = `${base}${suffix++}`;
+      }
+
+      // create a random password for social accounts (never exposed to user)
+      const randomPass = Math.random().toString(36).slice(2, 12);
+      const salt = await bcrypt.genSalt(10);
+      const hashed = await bcrypt.hash(randomPass, salt);
+
+      user = new User({ username, email: email.toLowerCase(), password: hashed, picture: picture || '', googleId: sub || '' });
+      await user.save();
+    }
+
+    // if user exists but missing picture or googleId, update them
+    else {
+      const needsUpdate = (!user.picture && picture) || (!user.googleId && sub);
+      if (needsUpdate) {
+        user.picture = user.picture || picture || '';
+        user.googleId = user.googleId || sub || '';
+        await user.save();
+      }
+    }
+
+    const token = jwt.sign({ id: user._id }, JWT_SECRET, { expiresIn: JWT_EXPIRES_IN });
+  res.status(200).json({ success: true, data: { user: { _id: user._id, id: user._id, username: user.username, email: user.email, picture: user.picture || '' }, token } });
+  } catch (error) {
+    console.error('Error in googleAuth:', error);
+    res.status(500).json({ success: false, message: 'Server error', error: error.message });
+  }
+};
+
+module.exports = { register, login, googleAuth };

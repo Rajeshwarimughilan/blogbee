@@ -5,3 +5,15 @@
 .auth-form button { width:100%; padding:12px; border-radius:10px; background:linear-gradient(45deg,#64ffda,#42a5f5); color:#081129; font-weight:700; border:none; }
 .auth-form p { text-align:center; color:#9aa6b2; margin-top:12px; }
 .auth-form a { color:#64ffda; }
+
+.google-fallback-btn {
+	width: 100%;
+	padding: 10px;
+	border-radius: 10px;
+	background: #4285f4;
+	color: white;
+	border: none;
+	font-weight: 700;
+	cursor: pointer;
+}
+.google-fallback-btn:hover { opacity: 0.95; }

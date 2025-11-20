@@ -12,6 +12,10 @@ export const authService = {
     const res = await api.post('/auth/login', data);
     return res;
   },
+  googleSignIn: async (idToken) => {
+    const res = await api.post('/auth/google', { idToken });
+    return res;
+  },
   logout: () => {
     localStorage.removeItem('token');
     localStorage.removeItem('user');

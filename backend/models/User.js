@@ -23,6 +23,16 @@ const userSchema = new mongoose.Schema({
     type: String,
     default: ''
   },
+  // optional Google profile picture URL
+  picture: {
+    type: String,
+    default: ''
+  },
+  // optional Google subject id for social logins
+  googleId: {
+    type: String,
+    default: ''
+  },
   createdAt: {
     type: Date,
     default: Date.now

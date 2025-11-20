@@ -26,6 +26,9 @@ const ProfilePage = () => {
   return (
     <div className="profile-page">
       <div className="profile-card">
+        {profile.picture && (
+          <img src={profile.picture} alt={profile.username} className="profile-avatar" />
+        )}
         <h2>{profile.username}</h2>
         <p className="profile-email">{profile.email}</p>
         <p className="profile-bio">{profile.bio || 'No bio yet.'}</p>
