@@ -6,7 +6,7 @@ const {
   updatePost,
   deletePost,
   toggleLike
-} = require('../controllers/postController2');
+} = require('../controllers/postController');
 const { verifyToken } = require('../middleware/authMiddleware');
 
 const router = express.Router();

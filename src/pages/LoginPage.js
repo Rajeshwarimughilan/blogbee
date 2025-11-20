@@ -57,19 +57,6 @@ const LoginPage = () => {
     }
   }, [login, navigate]);
 
-  const handleGoogleClick = () => {
-    const clientId = process.env.REACT_APP_GOOGLE_CLIENT_ID;
-    if (!clientId) {
-      alert('Google Sign-In is not configured. Please set REACT_APP_GOOGLE_CLIENT_ID.');
-      return;
-    }
-    if (window.google && window.google.accounts) {
-      // prompt will show One Tap or credential chooser
-      window.google.accounts.id.prompt();
-    } else {
-      alert('Google Identity script not loaded yet. Please try again in a moment.');
-    }
-  };
 
   return (
     <div className="auth-page">
@@ -80,9 +67,6 @@ const LoginPage = () => {
         <button type="submit" disabled={loading}>{loading ? 'Signing in...' : 'Sign in'}</button>
         {/* Google sign-in button (renders only if GOOGLE_CLIENT_ID provided) */}
         <div ref={googleButtonRef} style={{ marginTop: 12 }} />
-        <button type="button" className="google-fallback-btn" onClick={handleGoogleClick} style={{ marginTop: 12 }}>
-          Sign in with Google
-        </button>
         <p>Don't have an account? <Link to="/signup">Sign up</Link></p>
       </form>
     </div>

@@ -6,14 +6,3 @@
 .auth-form p { text-align:center; color:#9aa6b2; margin-top:12px; }
 .auth-form a { color:#64ffda; }
 
-.google-fallback-btn {
-	width: 100%;
-	padding: 10px;
-	border-radius: 10px;
-	background: #4285f4;
-	color: white;
-	border: none;
-	font-weight: 700;
-	cursor: pointer;
-}
-.google-fallback-btn:hover { opacity: 0.95; }
